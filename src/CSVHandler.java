@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 
 public class CSVHandler {
-	public ArrayList<Process> readFile(String file) throws IOException{
-		ArrayList<Process> processes= new ArrayList<Process>();
-		
-		int processPID, processBurstTime, processPriority, processArrivalTime;
+	public ArrayList<Page> pageFile(String file) throws IOException{
+		ArrayList<Page> pages= new ArrayList<Page>();
 		
 		@SuppressWarnings("resource")
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -16,13 +14,10 @@ public class CSVHandler {
 		while((line = br.readLine()) != null){
 			String[] lineField = line.split(",");
 
-			processPID = Integer.parseInt(lineField[0]);
-			processArrivalTime = Integer.parseInt(lineField[1]);
-			processBurstTime = Integer.parseInt(lineField[2]);
-			processPriority = Integer.parseInt(lineField[3]);
-			
-			processes.add(new Process(processArrivalTime, processPID, processBurstTime, processPriority));
+			for(int i = 0; i< lineField.length;i++){
+				pages.add(new Page(Integer.parseInt(lineField[i]), 1));
+			}
 		}
-		return processes;
+		return pages;
 	}
 }
