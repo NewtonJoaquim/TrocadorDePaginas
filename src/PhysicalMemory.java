@@ -1,6 +1,6 @@
 
 public class PhysicalMemory {
-	Page frameList[];
+	private Page frameList[];
 
 	public PhysicalMemory(int size) {
 		super();
@@ -20,11 +20,24 @@ public class PhysicalMemory {
 		return frameList[i];
 	}
 	
+	public int getSize(){
+		return this.frameList.length;
+	}
+	
 	public Page getPageByID(int i){
 		for(int j = 0; j < this.frameList.length;j++){
 			if(frameList[j].getPageID() == i)
 				return frameList[j];
 		}
 		return null;
+	}
+	
+	public boolean isPageInMemory(Page p){
+		for(int i=0;i<this.frameList.length;i++){
+			if(frameList[i].getPageID() == p.getPageID()){
+				return true;
+			}
+		}
+		return false;
 	}
 }
