@@ -16,7 +16,7 @@ public class SubstitutionOperation {
 		else{
 			pm.setPage(vm.removePage(0), firstIn);
 		}
-		
+		System.out.println("firstIn: " + firstIn);
 		if(firstIn == pm.getSize())
 			firstIn = 0;
 		else

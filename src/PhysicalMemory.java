@@ -34,8 +34,10 @@ public class PhysicalMemory {
 	
 	public boolean isPageInMemory(Page p){
 		for(int i=0;i<this.frameList.length;i++){
-			if(frameList[i].getPageID() == p.getPageID()){
-				return true;
+			if(frameList[i] != null){
+				if(frameList[i].getPageID() == p.getPageID()){
+					return true;
+				}
 			}
 		}
 		return false;

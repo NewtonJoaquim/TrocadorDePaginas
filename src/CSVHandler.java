@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 public class CSVHandler {
-	public ArrayList<Page> pageFile(String file) throws IOException{
+	public ArrayList<Page> readPageFile(String file) throws IOException{
 		ArrayList<Page> pages= new ArrayList<Page>();
 		
 		@SuppressWarnings("resource")
