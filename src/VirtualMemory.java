@@ -20,4 +20,5 @@ public class VirtualMemory {
 	public int getSize(){
 		return this.pageList.size();
 	}
+	
 }
