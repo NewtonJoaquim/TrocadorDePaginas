@@ -44,19 +44,26 @@ public class SubstitutionOperation {
 		System.out.println("////////////////////////////////////////////////");
 	}
 	
-	/*public void LRU(VirtualMemory vm, PhysicalMemory pm){
-		int counter = 0;
-		int clock[] = new int[];
-		for(int i = 0; i<clock.length;i++){
-			for(int j = 0; j<vm.getSize();j++){
-				if(){
-					
+	public void Ideal(VirtualMemory vm, PhysicalMemory pm){
+		if(vm.getSize() > 0)
+			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
+		if(pm.isPageInMemory(vm.getPageByPosition(0))){
+			vm.removePage(0);
+		}
+			
+	}
+	
+	public void LRU(VirtualMemory vm, PhysicalMemory pm, int counter[]){
+		if(vm.getSize() > 0)
+			System.out.println("Proxima pagina :"+ vm.getPageByPosition(0).getPageID());
+		for(int i = 0; i<vm.getSize();i++){
+			for(int j = 0; j<counter.length;j++){
+				if(vm.getPageByPosition(i) == pm.getPosition(j)){
+					counter[j]++;
+					j = counter.length;
 				}
 			}
 		}
 		
-		if(pm.isPageInMemory(vm.getPageByPosition(0))){
-			vm.removePage(0);
-		}
-	}*/
+	}
 }

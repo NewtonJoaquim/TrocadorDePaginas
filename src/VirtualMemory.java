@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,4 +22,12 @@ public class VirtualMemory {
 		return this.pageList.size();
 	}
 	
+	public int getNumberOfDifferentPages(){
+		List<Integer> pages = new ArrayList<Integer>();
+		for(Page aux : pageList){
+			if(!pages.contains(aux.getPageID()))
+				pages.add(aux.getPageID());
+		}
+		return pages.size();
+	}
 }

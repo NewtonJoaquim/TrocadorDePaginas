@@ -24,6 +24,22 @@ public class PageSwitcher {
 		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
 	}
 	
+	public void doLRU(){
+		sub.fillPhysicalMemory(this.pm, this.vm);
+		int counter[] = new int[this.pm.getSize()];
+		for(int i = 0; i<counter.length;i++){
+			counter[i] = 0;
+		}
+		while(this.vm.getSize() != 0){
+			sub.LRU(vm, pm, counter);
+			for(int i = 0; i<this.pm.getSize();i++){
+				System.out.print(this.pm.getPosition(i).getPageID() + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+	}
+	
 	public static void main(String args[]) throws IOException{
 		CSVHandler handler = new CSVHandler();
 		SubstitutionOperation sub = new SubstitutionOperation();
