@@ -46,7 +46,7 @@ public class PageSwitcher {
 		PhysicalMemory pm = new PhysicalMemory(3);
 		VirtualMemory vm = new VirtualMemory(handler.readPageFile("pages.csv"));
 		PageSwitcher ps = new PageSwitcher(vm, pm, sub);
-		ps.doFIFO();
+		ps.doLRU();
 		
 		//for(int i = 0; i<vm.getSize();i++){
 		//	System.out.println(vm.getPageByPosition(i).getPageID());

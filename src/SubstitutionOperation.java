@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Collections;
+
 public class SubstitutionOperation {
 	
 	private int firstIn;
@@ -55,15 +58,29 @@ public class SubstitutionOperation {
 	
 	public void LRU(VirtualMemory vm, PhysicalMemory pm, int counter[]){
 		if(vm.getSize() > 0)
-			System.out.println("Proxima pagina :"+ vm.getPageByPosition(0).getPageID());
-		for(int i = 0; i<vm.getSize();i++){
-			for(int j = 0; j<counter.length;j++){
-				if(vm.getPageByPosition(i) == pm.getPosition(j)){
-					counter[j]++;
-					j = counter.length;
-				}
+			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
+		if(pm.isPageInMemory(vm.getPageByPosition(0))){
+			vm.removePage(0);
+		}
+		else{
+			pageFaultCounter++;
+			leastRecentlyUsed = getLeastRecentlyUsedPosition(counter);
+			pm.setPage(vm.removePage(0), leastRecentlyUsed);
+			counter[leastRecentlyUsed]++;
+		}
+		System.out.println("Least Recently Used: " + leastRecentlyUsed);
+		System.out.println("///////////////////////////////////////////////////");
+	}
+	
+	private int getLeastRecentlyUsedPosition(int counter[]){
+		int value = Integer.MAX_VALUE;
+		int pos = 0;
+		for(int i = 0; i < counter.length; i++){
+			if(value > counter[i]){
+				value = counter[i];
+				pos = i;
 			}
 		}
-		
+		return pos;
 	}
 }
