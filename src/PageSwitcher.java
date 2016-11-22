@@ -22,6 +22,7 @@ public class PageSwitcher {
 			System.out.println(" ");
 		}
 		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+		this.sub.printTimeInfo();
 	}
 	
 	public void doLRU(){
@@ -38,15 +39,30 @@ public class PageSwitcher {
 			System.out.println(" ");
 		}
 		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+		this.sub.printTimeInfo();
+	}
+	
+	public void doIdeal(){
+		sub.fillPhysicalMemory(this.pm, this.vm);
+		int frequency[] = new int[this.vm.getNumberOfDifferentPages()];
+		while(this.vm.getSize() != 0){
+			sub.Ideal(vm, pm, frequency);
+			for(int i = 0; i<this.pm.getSize();i++){
+				System.out.print(this.pm.getPosition(i).getPageID() + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+		this.sub.printTimeInfo();
 	}
 	
 	public static void main(String args[]) throws IOException{
 		CSVHandler handler = new CSVHandler();
 		SubstitutionOperation sub = new SubstitutionOperation();
-		PhysicalMemory pm = new PhysicalMemory(3);
+		PhysicalMemory pm = new PhysicalMemory(4);
 		VirtualMemory vm = new VirtualMemory(handler.readPageFile("pages.csv"));
 		PageSwitcher ps = new PageSwitcher(vm, pm, sub);
-		ps.doLRU();
+		ps.doIdeal();
 		
 		//for(int i = 0; i<vm.getSize();i++){
 		//	System.out.println(vm.getPageByPosition(i).getPageID());

@@ -42,4 +42,20 @@ public class PhysicalMemory {
 		}
 		return false;
 	}
+	public int getPagePosition(Page page){
+		for(int i = 0; i<this.frameList.length;i++){
+			if(frameList[i].getPageID() == page.getPageID()){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public int getPositionByID(int i){
+		for(int j = 0; j<this.frameList.length; j++){
+			if(frameList[j].getPageID() == i)
+				return j;
+		}
+		return -1;
+	}
 }
