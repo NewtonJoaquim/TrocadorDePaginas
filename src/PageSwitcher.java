@@ -25,6 +25,23 @@ public class PageSwitcher {
 		this.sub.printTimeInfo();
 	}
 	
+	public void doLRU(){
+		sub.fillPhysicalMemory(this.pm, this.vm);
+		double clock[] = new double[this.pm.getSize()];
+		for(int i = 0; i<clock.length;i++){
+			clock[i] = 0;
+		}
+		while(this.vm.getSize() != 0){
+			sub.LRU(vm, pm, clock);
+			for(int i = 0; i<this.pm.getSize();i++){
+				System.out.print(this.pm.getPosition(i).getPageID() + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+		this.sub.printTimeInfo();
+	}
+	
 	public void doLFU(){
 		sub.fillPhysicalMemory(this.pm, this.vm);
 		int counter[] = new int[this.pm.getSize()];
@@ -33,6 +50,23 @@ public class PageSwitcher {
 		}
 		while(this.vm.getSize() != 0){
 			sub.LFU(vm, pm, counter);
+			for(int i = 0; i<this.pm.getSize();i++){
+				System.out.print(this.pm.getPosition(i).getPageID() + " ");
+			}
+			System.out.println(" ");
+		}
+		System.out.println("Page Faults: "+ sub.getPageFaultCounter());
+		this.sub.printTimeInfo();
+	}
+	
+	public void doMFU(){
+		sub.fillPhysicalMemory(this.pm, this.vm);
+		int counter[] = new int[this.pm.getSize()];
+		for(int i = 0; i<counter.length;i++){
+			counter[i] = 0;
+		}
+		while(this.vm.getSize() != 0){
+			sub.MFU(vm, pm, counter);
 			for(int i = 0; i<this.pm.getSize();i++){
 				System.out.print(this.pm.getPosition(i).getPageID() + " ");
 			}

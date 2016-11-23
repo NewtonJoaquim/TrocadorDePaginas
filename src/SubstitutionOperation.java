@@ -1,7 +1,7 @@
 public class SubstitutionOperation {
 	
 	private int firstIn;
-	private int leastRecentlyUsed;
+	private int leastRecentlyUsed, mostFrequentlyUsed;
 	private int pageFaultCounter;
 	private double accessTime, totalExecutionTime, swapTime;
 	
@@ -83,7 +83,24 @@ public class SubstitutionOperation {
 			}
 		}
 	}
-	
+	public void LRU(VirtualMemory vm, PhysicalMemory pm, double clock[]){
+		if(vm.getSize() > 0)
+			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
+		if(pm.isPageInMemory(vm.getPageByPosition(0))){
+			leastRecentlyUsed = pm.getPagePosition(vm.removePage(0));
+			clock[leastRecentlyUsed] = System.currentTimeMillis();
+			totalExecutionTime += accessTime; 
+		}
+		else{
+			pageFaultCounter++;
+			leastRecentlyUsed = (int) minValue(clock);
+			pm.setPage(vm.removePage(0), leastRecentlyUsed);
+			clock[leastRecentlyUsed]= 1;
+			totalExecutionTime += accessTime + swapTime;
+		}
+		System.out.println("Least Recently Used: " + leastRecentlyUsed);
+		System.out.println("///////////////////////////////////////////////////");
+	}
 	
 	public void LFU(VirtualMemory vm, PhysicalMemory pm, int counter[]){
 		if(vm.getSize() > 0)
@@ -100,8 +117,38 @@ public class SubstitutionOperation {
 			counter[leastRecentlyUsed]++;
 			totalExecutionTime += accessTime + swapTime;
 		}
-		System.out.println("Least Recently Used: " + leastRecentlyUsed);
+		System.out.println("Least Frequently Used: " + leastRecentlyUsed);
 		System.out.println("///////////////////////////////////////////////////");
+	}
+	
+	public void MFU(VirtualMemory vm, PhysicalMemory pm, int counter[]){
+		if(vm.getSize() > 0)
+			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
+		if(pm.isPageInMemory(vm.getPageByPosition(0))){
+			mostFrequentlyUsed = pm.getPagePosition(vm.removePage(0));
+			counter[mostFrequentlyUsed]++;
+			totalExecutionTime += accessTime; 
+		}
+		else{
+			pageFaultCounter++;
+			mostFrequentlyUsed = maxValue(counter);
+			pm.setPage(vm.removePage(0), mostFrequentlyUsed);
+			//counter[mostFrequentlyUsed]++;
+			totalExecutionTime += accessTime + swapTime;
+		}
+		System.out.println("Most Frequently Used: " + mostFrequentlyUsed);
+		System.out.println("///////////////////////////////////////////////////");
+	}
+	private int maxValue(int array[]){
+		int value = Integer.MIN_VALUE;
+		int pos = 0;
+		for(int i = 0; i < array.length; i++){
+			if(value < array[i]){
+				value = array[i];
+				pos = i;
+			}
+		}
+		return pos;
 	}
 	
 	private int minValue(int array[]){
@@ -115,25 +162,20 @@ public class SubstitutionOperation {
 		}
 		return pos;
 	}
-	
-	public void LRU(VirtualMemory vm, PhysicalMemory pm, double clock[]){
-		if(vm.getSize() > 0)
-			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
-		if(pm.isPageInMemory(vm.getPageByPosition(0))){
-			leastRecentlyUsed = pm.getPagePosition(vm.removePage(0));
-			clock[leastRecentlyUsed] = System.currentTimeMillis();
-			totalExecutionTime += accessTime; 
+	private double minValue(double array[]){
+		double value = Double.MAX_VALUE;
+		int pos = 0;
+		for(int i = 0; i < array.length; i++){
+			if(value > array[i]){
+				value = array[i];
+				pos = i;
+			}
 		}
-		else{
-			pageFaultCounter++;
-			leastRecentlyUsed = minValue(clock);
-			pm.setPage(vm.removePage(0), leastRecentlyUsed);
-			clock[leastRecentlyUsed]= 0;
-			totalExecutionTime += accessTime + swapTime;
-		}
-		System.out.println("Least Recently Used: " + leastRecentlyUsed);
-		System.out.println("///////////////////////////////////////////////////");
+		return pos;
 	}
+	
+	
+	
 	
 	
 }
