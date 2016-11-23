@@ -45,6 +45,17 @@ public class PageSwitcher {
 	public void doIdeal(){
 		sub.fillPhysicalMemory(this.pm, this.vm);
 		int frequency[] = new int[this.vm.getNumberOfDifferentPages()];
+		for(int i = 0;i<frequency.length;i++){
+			frequency[i] = 0;
+		}
+		for(int i = 0; i<vm.getSize();i++){
+			frequency[vm.getPageByPosition(i).getPageID()-1]++;
+		}
+		for(int i = 0; i<frequency.length;i++){
+			System.out.print(frequency[i]+ " ");
+		}
+		System.out.println();
+		
 		while(this.vm.getSize() != 0){
 			sub.Ideal(vm, pm, frequency);
 			for(int i = 0; i<this.pm.getSize();i++){

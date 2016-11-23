@@ -56,13 +56,7 @@ public class SubstitutionOperation {
 	}
 	
 	public void Ideal(VirtualMemory vm, PhysicalMemory pm, int frequency[]){
-		for(int i = 0;i<frequency.length;i++){
-			frequency[i] = 0;
-		}
-		for(int i = 0; i<vm.getSize();i++){
-			frequency[vm.getPageByPosition(i).getPageID()-1]++;
-		}
-		//PRECISA SER CONSERTADO!!!
+		System.out.println("Frequency: "+ frequency[0] +" " + frequency[1] +" "+ frequency[2] +" "+ frequency[3] +" "+ frequency[4]);
 		if(vm.getSize() > 0)
 			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
 		if(pm.isPageInMemory(vm.getPageByPosition(0))){
@@ -71,12 +65,25 @@ public class SubstitutionOperation {
 		}
 		else{
 			pageFaultCounter++;
-			pm.setPage(vm.removePage(0), minValue(frequency));
+			pm.setPage(vm.removePage(0), getLessFrequentInMemory(pm, frequency));
+			frequency[getLessFrequentInMemory(pm, frequency)]++;
 			totalExecutionTime += accessTime + swapTime;
 		}
 		System.out.println("Least Frequently Used: " + minValue(frequency));
 		System.out.println("///////////////////////////////////////////////////");
 	}
+	private int getLessFrequentInMemory(PhysicalMemory pm, int frequency[]){
+		int frequencyAux[] = frequency;
+		while(true){
+			if(pm.isPageInMemory((minValue(frequencyAux)))){
+				return minValue(frequencyAux);
+			}
+			else{
+				frequencyAux[minValue(frequencyAux)] = Integer.MAX_VALUE;
+			}
+		}
+	}
+	
 	
 	public void LRU(VirtualMemory vm, PhysicalMemory pm, int counter[]){
 		if(vm.getSize() > 0)

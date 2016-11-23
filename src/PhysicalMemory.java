@@ -42,6 +42,17 @@ public class PhysicalMemory {
 		}
 		return false;
 	}
+	public boolean isPageInMemory(int id){
+		for(int i=0;i<this.frameList.length;i++){
+			if(frameList[i] != null){
+				if(frameList[i].getPageID() == id){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public int getPagePosition(Page page){
 		for(int i = 0; i<this.frameList.length;i++){
 			if(frameList[i].getPageID() == page.getPageID()){
