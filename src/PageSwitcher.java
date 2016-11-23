@@ -25,14 +25,14 @@ public class PageSwitcher {
 		this.sub.printTimeInfo();
 	}
 	
-	public void doLRU(){
+	public void doLFU(){
 		sub.fillPhysicalMemory(this.pm, this.vm);
 		int counter[] = new int[this.pm.getSize()];
 		for(int i = 0; i<counter.length;i++){
 			counter[i] = 0;
 		}
 		while(this.vm.getSize() != 0){
-			sub.LRU(vm, pm, counter);
+			sub.LFU(vm, pm, counter);
 			for(int i = 0; i<this.pm.getSize();i++){
 				System.out.print(this.pm.getPosition(i).getPageID() + " ");
 			}
@@ -73,7 +73,7 @@ public class PageSwitcher {
 		PhysicalMemory pm = new PhysicalMemory(4);
 		VirtualMemory vm = new VirtualMemory(handler.readPageFile("pages.csv"));
 		PageSwitcher ps = new PageSwitcher(vm, pm, sub);
-		ps.doIdeal();
+		ps.doLFU();
 		
 		//for(int i = 0; i<vm.getSize();i++){
 		//	System.out.println(vm.getPageByPosition(i).getPageID());
