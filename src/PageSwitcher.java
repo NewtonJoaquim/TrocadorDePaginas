@@ -85,9 +85,6 @@ public class PageSwitcher {
 		for(int i = 0; i<vm.getSize();i++){
 			frequency[vm.getPageByPosition(i).getPageID()-1]++;
 		}
-		for(int i = 0; i<frequency.length;i++){
-			System.out.print(frequency[i]+ " ");
-		}
 		System.out.println();
 		
 		while(this.vm.getSize() != 0){

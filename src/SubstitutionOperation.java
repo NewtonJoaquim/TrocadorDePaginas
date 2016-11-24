@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class SubstitutionOperation {
 	
 	private int firstIn;
@@ -72,6 +74,19 @@ public class SubstitutionOperation {
 		System.out.println("Least Frequently Used: " + minValue(frequency));
 		System.out.println("///////////////////////////////////////////////////");
 	}
+	private int getIdealElement(VirtualMemory vm, int frequency){
+		ArrayList<Integer> foundElements = new ArrayList<Integer>();
+		for(int i = 0; i<vm.getSize();i++){
+			if(!foundElements.contains(vm.getPageByPosition(i).getPageID())){
+				foundElements.add(vm.getPageByPosition(i).getPageID());
+			}
+			if(foundElements.size() == vm.getNumberOfDifferentPages()){
+				return foundElements.get(vm.getNumberOfDifferentPages() - 1);
+			}
+		}
+	}
+	
+	
 	private int getLessFrequentInMemory(PhysicalMemory pm, int frequency[]){
 		int frequencyAux[] = new int[frequency.length];
 		for(int i = 0; i<frequency.length; i++){
