@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 public class PageSwitcher {
 	VirtualMemory vm;
@@ -78,17 +80,18 @@ public class PageSwitcher {
 	
 	public void doIdeal(){
 		sub.fillPhysicalMemory(this.pm, this.vm);
-		int frequency[] = new int[this.vm.getNumberOfDifferentPages()];
-		for(int i = 0;i<frequency.length;i++){
-			frequency[i] = 0;
+		int counter[] = new int[this.pm.getSize()];
+		boolean verificator[] = new boolean[this.pm.getSize()];
+		for(int i = 0;i<verificator.length;i++){
+			verificator[i] = false;
 		}
-		for(int i = 0; i<vm.getSize();i++){
-			frequency[vm.getPageByPosition(i).getPageID()-1]++;
+		for(int i = 0;i<counter.length;i++){
+			counter[i] = 0;
 		}
 		System.out.println();
 		
 		while(this.vm.getSize() != 0){
-			sub.Ideal(vm, pm, frequency);
+			sub.Ideal(vm, pm, counter, verificator);
 			for(int i = 0; i<this.pm.getSize();i++){
 				System.out.print(this.pm.getPosition(i).getPageID() + " ");
 			}
@@ -99,17 +102,28 @@ public class PageSwitcher {
 	}
 	
 	public static void main(String args[]) throws IOException{
+		Scanner scan = new Scanner(System.in);
 		CSVHandler handler = new CSVHandler();
 		SubstitutionOperation sub = new SubstitutionOperation();
 		PhysicalMemory pm = new PhysicalMemory(4);
 		VirtualMemory vm = new VirtualMemory(handler.readPageFile("pages.csv"));
 		PageSwitcher ps = new PageSwitcher(vm, pm, sub);
-		ps.doIdeal();
+		System.out.println("Escolha o algoritmo que deseja utilizar: ");
+		System.out.println("1: FIFO");
+		System.out.println("2: LRU");
+		System.out.println("3: Otimo");
+		System.out.println("4: LFU");
+		System.out.println("5: MFU");
+		String n = scan.next();
+		switch(Integer.parseInt(n)){
+			case 1: ps.doFIFO();break;
+			case 2: ps.doLRU();break;
+			case 3: ps.doIdeal();break;
+			case 4: ps.doLFU();break;
+			case 5: ps.doMFU();break;
+		}
+		scan.close();
 		
-		//for(int i = 0; i<vm.getSize();i++){
-		//	System.out.println(vm.getPageByPosition(i).getPageID());
-		//}
-		//ps.fillPhysicalMemory();
 	}
 	
 }

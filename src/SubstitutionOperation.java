@@ -57,50 +57,41 @@ public class SubstitutionOperation {
 		System.out.println("////////////////////////////////////////////////");
 	}
 	
-	public void Ideal(VirtualMemory vm, PhysicalMemory pm, int frequency[]){
-		System.out.println("Frequency: "+ frequency[0] +" " + frequency[1] +" "+ frequency[2] +" "+ frequency[3] +" "+ frequency[4]);
+	public void Ideal(VirtualMemory vm, PhysicalMemory pm, int counter[], boolean verificator[]){
 		if(vm.getSize() > 0)
 			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
 		if(pm.isPageInMemory(vm.getPageByPosition(0))){
+			counter[pm.getPagePosition(vm.getPageByPosition(0))] = 0;
 			vm.removePage(0);
 			totalExecutionTime += accessTime; 
 		}
 		else{
 			pageFaultCounter++;
-			pm.setPage(vm.removePage(0), getLessFrequentInMemory(pm, frequency));
-			frequency[getLessFrequentInMemory(pm, frequency)]++;
+			pm.setPage(vm.removePage(0), getIdealElement(vm, pm, verificator, counter));
+			counter[getIdealElement(vm, pm, verificator, counter)] = 0;
 			totalExecutionTime += accessTime + swapTime;
 		}
-		System.out.println("Least Frequently Used: " + minValue(frequency));
+		for(int i = 0; i<verificator.length;i++){
+			verificator[i] = false;
+		}
 		System.out.println("///////////////////////////////////////////////////");
 	}
-	private int getIdealElement(VirtualMemory vm, int frequency){
-		ArrayList<Integer> foundElements = new ArrayList<Integer>();
+	private int getIdealElement(VirtualMemory vm, PhysicalMemory pm, boolean verificator[], int counter[]){
+		int count = 0;
 		for(int i = 0; i<vm.getSize();i++){
-			if(!foundElements.contains(vm.getPageByPosition(i).getPageID())){
-				foundElements.add(vm.getPageByPosition(i).getPageID());
+			for(int j = 0; j<pm.getSize();j++){
+				if(pm.isPageInMemory(vm.getPageByPosition(i).getPageID()) && verificator[j] == false){
+				//if(pm.getPosition(j).equals(vm.getPageByPosition(i).getPageID()) && verificator[j] == false){	
+					counter[j] = count;
+					verificator[j] = true;
+					j = pm.getSize();
+				}
 			}
-			if(foundElements.size() == vm.getNumberOfDifferentPages()){
-				return foundElements.get(vm.getNumberOfDifferentPages() - 1);
-			}
+			count++;
 		}
+		return maxValue(counter);
 	}
 	
-	
-	private int getLessFrequentInMemory(PhysicalMemory pm, int frequency[]){
-		int frequencyAux[] = new int[frequency.length];
-		for(int i = 0; i<frequency.length; i++){
-			frequencyAux[i] = frequency[i];
-		}
-		while(true){
-			if(pm.isPageInMemory((minValue(frequencyAux)))){
-				return minValue(frequencyAux);
-			}
-			else{
-				frequencyAux[minValue(frequencyAux)] = Integer.MAX_VALUE;
-			}
-		}
-	}
 	public void LRU(VirtualMemory vm, PhysicalMemory pm, double clock[]){
 		if(vm.getSize() > 0)
 			System.out.println("Proxima pagina: "+ vm.getPageByPosition(0).getPageID());
