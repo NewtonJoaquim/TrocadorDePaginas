@@ -73,7 +73,10 @@ public class SubstitutionOperation {
 		System.out.println("///////////////////////////////////////////////////");
 	}
 	private int getLessFrequentInMemory(PhysicalMemory pm, int frequency[]){
-		int frequencyAux[] = frequency;
+		int frequencyAux[] = new int[frequency.length];
+		for(int i = 0; i<frequency.length; i++){
+			frequencyAux[i] = frequency[i];
+		}
 		while(true){
 			if(pm.isPageInMemory((minValue(frequencyAux)))){
 				return minValue(frequencyAux);
